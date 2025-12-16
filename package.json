@@ -1,13 +1,38 @@
 {
-  "name": "infinite-word-search-monorepo",
-  "version": "1.0.0",
+  "name": "auto-word-search",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "cd auto-word-search && npm ci && npm run build",
-    "start": "cd auto-word-search && npm start"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "biome format --write .",
+    "lint:biome": "biome lint .",
+    "check": "biome lint --write .",
+    "fix": "biome lint --write . && biome format --write ."
   },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+  "dependencies": {
+    "@stripe/stripe-js": "^8.6.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.87.3",
+    "next": "^15.5.4",
+    "next-intl": "^4.6.0",
+    "openai": "^6.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "stripe": "^20.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

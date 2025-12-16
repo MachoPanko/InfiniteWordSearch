@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.5"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "biome format --write .",
+    "lint:biome": "biome lint .",
+    "check": "biome lint --write ."
+  }
+}

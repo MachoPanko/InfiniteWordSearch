@@ -3,9 +3,14 @@ import { createClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 import { CREDIT_PACKAGES, getTotalCredits, type PackageId } from '@/lib/credit-pricing';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-11-17.clover',
-});
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-11-17.clover',
+  });
+}
 
 export async function POST(request: Request) {
   try {
@@ -37,6 +42,7 @@ export async function POST(request: Request) {
     const totalCredits = getTotalCredits(packageId as PackageId);
 
     // Create Stripe checkout session
+    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],

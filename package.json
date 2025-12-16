@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.6.0",
-    "@supabase/ssr": "^0.8.0",
-    "@supabase/supabase-js": "^2.87.3",
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "2.45.4",
     "next": "^15.5.4",
     "next-intl": "^4.6.0",
     "openai": "^6.3.0",

@@ -58,8 +58,6 @@ async function generateWordsForTheme(theme: string, count: number, locale: strin
           content: `Generate a list of words related to: ${theme}`,
         },
       ],
-      temperature: 0.8,
-      max_tokens: 200,
     });
 
     const response = completion.choices[0]?.message?.content;

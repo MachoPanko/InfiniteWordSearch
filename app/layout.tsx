@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LanguageProvider } from "@/components/LanguageProvider";
-import { messages } from "../../i18n";
+import { messages } from "@/i18n";
 import AuthButton from "@/components/AuthButton";
 import "./globals.css";
 

@@ -1,14 +1,18 @@
 {
-  "devDependencies": {
-    "@biomejs/biome": "^2.2.5"
-  },
+  "name": "infinite-word-search",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "auto-word-search"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "biome format --write .",
-    "lint:biome": "biome lint .",
-    "check": "biome lint --write ."
+    "dev": "cd auto-word-search && npm run dev",
+    "build": "cd auto-word-search && npm install && npm run build",
+    "start": "cd auto-word-search && npm start",
+    "install": "cd auto-word-search && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

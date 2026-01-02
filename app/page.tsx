@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { generateWordSearch } from '@/lib/wordSearchGenerator';
 import WordSearchForm from '@/components/WordSearchForm';
 import PuzzleDisplay from '@/components/PuzzleDisplay';
+import CreditsPurchaseModal from '@/components/CreditsPurchaseModal';
 import type { WordSearchPuzzle } from '@/lib/wordSearchGenerator';
 import { useLanguage } from '@/components/LanguageProvider';
 
@@ -21,6 +22,7 @@ export default function Home() {
   const [showSolution, setShowSolution] = useState(false);
   const [numRandomThemes, setNumRandomThemes] = useState(1);
   const [isGenerated, setIsGenerated] = useState(false);
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
 
   const handleGeneratePuzzle = async () => {
     if (!themeList.trim()) {
@@ -92,7 +94,14 @@ export default function Home() {
     <div className="min-h-screen p-4 sm:p-8">
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <header className="relative text-center mb-8">
-          <div className="absolute top-0 right-0">
+          <div className="absolute top-0 right-0 flex gap-2">
+            {/** biome-ignore lint/a11y/useButtonType: <explanation> */}
+            <button
+              onClick={() => setShowCreditsModal(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-semibold transition-colors duration-300"
+            >
+              💳 Buy Credits
+            </button>
             {/** biome-ignore lint/a11y/useButtonType: <explanation> */}
             <button
               onClick={handleLocaleChange}
@@ -261,6 +270,11 @@ export default function Home() {
           </div>
         </section>
       </div>
+
+      <CreditsPurchaseModal
+        isOpen={showCreditsModal}
+        onClose={() => setShowCreditsModal(false)}
+      />
     </div>
   );
 }

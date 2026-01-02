@@ -41,6 +41,10 @@ export async function POST(request: Request) {
     const selectedPackage = CREDIT_PACKAGES[packageId as PackageId];
     const totalCredits = getTotalCredits(packageId as PackageId);
 
+    // Get the base URL from the request
+    const url = new URL(request.url);
+    const baseUrl = `${url.protocol}//${url.host}`;
+
     // Create Stripe checkout session
     const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
@@ -63,8 +67,8 @@ export async function POST(request: Request) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/?payment=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/?payment=cancelled`,
+      success_url: `${baseUrl}/?payment=success`,
+      cancel_url: `${baseUrl}/?payment=cancelled`,
       metadata: {
         userId: user.id,
         packageId,

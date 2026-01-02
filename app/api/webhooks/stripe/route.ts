@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
-import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/server';
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -84,29 +84,39 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
 
   // Get current profile
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('credit_balance')
     .eq('id', userId)
     .single();
 
+  if (profileError) {
+    console.error('Error fetching profile:', profileError);
+    return;
+  }
+
   const newBalance = (profile?.credit_balance || 0) + credits;
 
   // Update user's credit balance
-  await supabase
+  const { error: updateError } = await supabase
     .from('profiles')
     .update({
       credit_balance: newBalance,
-      total_credits_purchased: supabase.rpc('increment', { x: credits }),
+      total_credits_purchased: credits,
       updated_at: new Date().toISOString(),
     })
     .eq('id', userId);
 
+  if (updateError) {
+    console.error('Error updating credits:', updateError);
+    return;
+  }
+
   // Log the transaction
-  await supabase.from('credit_transactions').insert({
+  const { error: txError } = await supabase.from('credit_transactions').insert({
     user_id: userId,
     amount: credits,
     transaction_type: 'purchase',
@@ -115,14 +125,18 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     balance_after: newBalance,
   });
 
-  console.log(`Added ${credits} credits to user ${userId}. New balance: ${newBalance}`);
+  if (txError) {
+    console.error('Error logging transaction:', txError);
+  }
+
+  console.log(`✅ Added ${credits} credits to user ${userId}. New balance: ${newBalance}`);
 }
 
 async function handleRefund(charge: Stripe.Charge) {
   // Find the original transaction
   const paymentIntentId = charge.payment_intent as string;
   
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
 
   const { data: transaction } = await supabase
     .from('credit_transactions')

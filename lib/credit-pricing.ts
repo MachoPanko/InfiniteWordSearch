@@ -1,6 +1,15 @@
 // Credit-based pricing configuration
 
 export const CREDIT_PACKAGES = {
+  trial: {
+    id: 'trial',
+    name: 'Trial Pack',
+    credits: 20,
+    price: 100, // $1.00 in cents
+    priceDisplay: '$1',
+    bonus: 0,
+    popular: false,
+  },
   starter: {
     id: 'starter',
     name: 'Starter Pack',
